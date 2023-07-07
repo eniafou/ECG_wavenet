@@ -2,10 +2,11 @@
 A script for WaveNet training
 """
 import os
-
+from tqdm import tqdm
 import wavenet.config as config
 from wavenet.model import WaveNet
-from wavenet.utils.data import DataLoader
+from wavenet.utils.data import Dataset
+import torch.utils.data as data
 
 
 class Trainer:
@@ -16,27 +17,34 @@ class Trainer:
                                args.in_channels, args.res_channels,
                                lr=args.lr)
 
-        self.data_loader = DataLoader(args.data_dir, self.wavenet.receptive_fields,
-                                      args.sample_size, args.sample_rate, args.in_channels)
+        self.dataset = Dataset(args.data_dir, self.wavenet.receptive_fields, args.in_channels)
+        self.data_loader = data.DataLoader(self.dataset, batch_size=32,shuffle=True)
 
-    def infinite_batch(self):
-        while True:
-            for dataset in self.data_loader:
-                for inputs, targets in dataset:
-                    yield inputs, targets
+
 
     def run(self):
-        total_steps = 0
+        """
+        num_epoch = 30
+        for epoch in range(num_epoch):
+            for i, (inputs, targets) in enumerate(self.data_loader):
+                print(i)
+                loss = self.wavenet.train(inputs, targets)
+                if True :#(i+1)%5 == 0:
+                    print('[{0}/{1}] loss: {2}'.format(epoch + 1, num_epoch, loss))
+        """
+        num_epoch = 30
+        data_loader_iter = iter(self.data_loader)
+        total_iterations = len(self.data_loader)
 
-        for inputs, targets in self.infinite_batch():
-            loss = self.wavenet.train(inputs, targets)
+        for epoch in range(num_epoch):
+            progress_bar = tqdm(range(total_iterations), f"Epoch {epoch + 1}/{num_epoch}", unit="batch")
 
-            total_steps += 1
-
-            print('[{0}/{1}] loss: {2}'.format(total_steps, args.num_steps, loss))
-
-            if total_steps > self.args.num_steps:
-                break
+            for _ in progress_bar:
+                inputs, targets = next(data_loader_iter)
+                loss = self.wavenet.train(inputs, targets)
+                
+                if True :#(i+1)%5 == 0:
+                    progress_bar.set_postfix(loss=loss)
 
         self.wavenet.save(args.model_dir)
 
