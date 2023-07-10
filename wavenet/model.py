@@ -51,19 +51,15 @@ class WaveNet:
         :param targets: Torch tensor [batch, timestep, channels]
         :return: float loss
         """
-        print("line 55") 
         outputs = self.net(inputs) # slow
         
-        print("line 58")
+
         loss = self.loss(outputs.view(-1, self.in_channels),
                          targets.long().view(-1))
-        print("line 61")
         self.optimizer.zero_grad()
 
-        print("line 64")
         loss.backward() #slow
 
-        print("line 67")
         self.optimizer.step()
 
         return loss.item()

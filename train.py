@@ -23,7 +23,7 @@ class Trainer:
 
 
     def run(self):
-        """
+        
         num_epoch = 30
         for epoch in range(num_epoch):
             for i, (inputs, targets) in enumerate(self.data_loader):
@@ -31,6 +31,7 @@ class Trainer:
                 loss = self.wavenet.train(inputs, targets)
                 if True :#(i+1)%5 == 0:
                     print('[{0}/{1}] loss: {2}'.format(epoch + 1, num_epoch, loss))
+        
         """
         num_epoch = 30
         data_loader_iter = iter(self.data_loader)
@@ -45,6 +46,7 @@ class Trainer:
                 
                 if True :#(i+1)%5 == 0:
                     progress_bar.set_postfix(loss=loss)
+        """
 
         self.wavenet.save(args.model_dir)
 
