@@ -10,7 +10,7 @@ import torch.utils.data as data
 import pandas as pd
 
 
-def load_audio(filename, sample_rate=16000, trim=True, trim_frame_length=2048):
+def load_audio(filename):
     # sample rate is not important, it was used in the audio implementation of this function
     signal, meta = wfdb.rdsamp(filename)
 

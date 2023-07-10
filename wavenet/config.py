@@ -1,5 +1,5 @@
 """
-Training Options (test)
+Training Options
 """
 import argparse
 
