@@ -11,7 +11,7 @@ import pandas as pd
 
 
 def load_audio(filename):
-    # sample rate is not important, it was used in the audio implementation of this function
+    # sample rate is not important, it was used in the audio implementation of this function.
     signal, meta = wfdb.rdsamp(filename)
 
     return signal
