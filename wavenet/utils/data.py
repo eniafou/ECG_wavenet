@@ -1,5 +1,5 @@
 """
-Show raw audio and mu-law encode samples to make input source
+Show raw audio and mu-law encode samples to make input source.
 """
 import os
 
