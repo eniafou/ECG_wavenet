@@ -18,13 +18,13 @@ class Trainer:
                                lr=args.lr)
 
         self.dataset = Dataset(args.data_dir, self.wavenet.receptive_fields, args.in_channels)
-        self.data_loader = data.DataLoader(self.dataset, batch_size=100,shuffle=True)
+        self.data_loader = data.DataLoader(self.dataset, batch_size=args.batch_size,shuffle=True)
 
 
 
     def run(self):
         
-        num_epoch = 1
+        num_epoch = args.num_epoch
         for epoch in range(num_epoch):
             for i, (inputs, targets) in enumerate(self.data_loader):
                 print(i)
