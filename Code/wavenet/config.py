@@ -24,7 +24,7 @@ def parse_args(is_training=True):
                     help='number of training epochs')
         parser.add_argument('--batch_size', type=int, default=100,
                     help='the batch size')
-        parser.add_argument('--data_dir', type=str, default='data/ptb-xl/', help='Training data dir')
+        parser.add_argument('--data_dir', type=str, default='../ptb-xl/', help='Training data dir')
         parser.add_argument('--output_dir', type=str, default='./output', help='Output dir for saving model and etc')
         parser.add_argument('--num_steps', type=int, default=100000, help='Total training steps')
         parser.add_argument('--lr', type=float, default=0.01, help='learning rate decay')
