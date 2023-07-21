@@ -21,7 +21,7 @@ class WaveNet:
         self.lr = lr
         self.loss = self._loss()
         self.optimizer = self._optimizer()
-
+        self.lr_scheduler = self._lr_scheduler()
         self._prepare_for_gpu()
 
     @staticmethod
@@ -32,6 +32,9 @@ class WaveNet:
             loss = loss.cuda()
 
         return loss
+    def _lr_scheduler(self):
+        return torch.optim.lr_scheduler.ReduceLROnPlateau(self.optimizer)
+
 
     def _optimizer(self):
         return torch.optim.Adam(self.net.parameters(), lr=self.lr)

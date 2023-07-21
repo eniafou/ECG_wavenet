@@ -20,6 +20,8 @@ parser.add_argument('--sample_size', type=int, default=100000, help='Sample size
 
 def parse_args(is_training=True):
     if is_training:
+        parser.add_argument('--data_len', type=int, default=100,
+                    help='number of training samples')
         parser.add_argument('--num_epoch', type=int, default=1,
                     help='number of training epochs')
         parser.add_argument('--batch_size', type=int, default=100,

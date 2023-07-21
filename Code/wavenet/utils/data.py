@@ -60,13 +60,13 @@ def mu_law_decode(output, quantization_channels=256):
 
 
 class Dataset(data.Dataset):
-    def __init__(self, data_dir, receptive_fields, in_channels=256):
+    def __init__(self, data_dir, receptive_fields, in_channels=256, data_len = 100):
         super(Dataset, self).__init__()
 
         self.in_channels = in_channels
         self.receptive_fields = receptive_fields
         self.root_path = data_dir
-        self.filenames = pd.read_csv(data_dir+'ptbxl_database.csv', index_col='ecg_id')["filename_lr"]
+        self.filenames = pd.read_csv(data_dir+'ptbxl_database.csv', index_col='ecg_id')["filename_lr"].iloc[:data_len]
 
     @staticmethod
     def _variable(data):

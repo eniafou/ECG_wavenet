@@ -17,7 +17,7 @@ class Trainer:
                                args.in_channels, args.res_channels,
                                lr=args.lr)
 
-        self.dataset = Dataset(args.data_dir, self.wavenet.receptive_fields, args.in_channels)
+        self.dataset = Dataset(args.data_dir, self.wavenet.receptive_fields, args.in_channels, args.data_len)
         self.data_loader = data.DataLoader(self.dataset, batch_size=args.batch_size,shuffle=True)
 
 
@@ -25,28 +25,18 @@ class Trainer:
     def run(self):
         
         num_epoch = args.num_epoch
+        loss_per_epoch = []
         for epoch in range(num_epoch):
             for i, (inputs, targets) in enumerate(self.data_loader):
                 print(i)
                 loss = self.wavenet.train(inputs, targets)
                 if True :#(i+1)%5 == 0:
                     print('[{0}/{1}] loss: {2}'.format(epoch + 1, num_epoch, loss))
+            
+            self.wavenet.lr_scheduler.step(loss)
+            loss_per_epoch.append(loss)
         
-        """
-        num_epoch = 30
-        data_loader_iter = iter(self.data_loader)
-        total_iterations = len(self.data_loader)
-
-        for epoch in range(num_epoch):
-            progress_bar = tqdm(range(total_iterations), f"Epoch {epoch + 1}/{num_epoch}", unit="batch")
-
-            for _ in progress_bar:
-                inputs, targets = next(data_loader_iter)
-                loss = self.wavenet.train(inputs, targets)
-                
-                if True :#(i+1)%5 == 0:
-                    progress_bar.set_postfix(loss=loss)
-        """
+        print(loss_per_epoch)
 
         self.wavenet.save(args.model_dir)
 
