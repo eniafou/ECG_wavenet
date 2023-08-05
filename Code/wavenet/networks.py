@@ -10,7 +10,7 @@ References :
 import torch
 import numpy as np
 
-from wavenet.exceptions import InputSizeError
+from exceptions import InputSizeError
 
 
 class DilatedCausalConv1d(torch.nn.Module):
@@ -144,7 +144,7 @@ class ResidualStack(torch.nn.Module):
         Prepare dilated convolution blocks by layer and stack size
         :return:
         """
-        res_blocks = []
+        res_blocks = torch.nn.ModuleList()
         dilations = self.build_dilations()
 
         for dilation in dilations:
@@ -254,3 +254,8 @@ class WaveNet(torch.nn.Module):
 
         return output.transpose(1, 2).contiguous()
 
+# wavenet = WaveNet(5, 1, 256, 512)
+
+# for name, param in wavenet.named_parameters():
+#     if param.requires_grad:
+#         print(f"Layer name: {name}, Trainable Parameters: {param.shape}")
